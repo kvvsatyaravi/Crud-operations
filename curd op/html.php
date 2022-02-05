@@ -29,11 +29,23 @@
 		}		
 	}						
 ?>
-    
-    <form>
-		<input type='hidden' name='widget' value='curd_Add' >
-        <input type="submit" value="Add new member"  class="btn btn-primary col-md-offset-10" />
-    </form>
+	<div class="row">
+		<form class="form-inline">
+	        <div class="form-group col-md-offset-7  mx-sm-3 mb-2" >
+	            <input type="text" name="search_db" class="form-control" placeholder="Search by Member Id">
+	            <input type="hidden" name="widget" value="curd_op">
+	            <input type="submit" value="Search" class="btn btn-primary"> 
+	        </div>
+	    </form>
+	    <form class="form-inline">
+	    	<div class="form-group  mx-sm-3 mb-2">
+	    		<input type="hidden" name="widget" value="curd_Add">
+	        	<input type="submit" value="Add new member" class="btn btn-primary col-md-offset-2">
+	    	</div>
+    	</form>
+    </div>
+	<br>
+
     <table border=1 class="table">
         <thead>
         <tr>
@@ -83,9 +95,9 @@
                     <input type='hidden' name='user_id' value='<?= $row["user_id"] ?>' >
 					<input type='submit' value='Edit' class='btn btn-primary col-md-11' />
                     </form>
-                            
+                    <br>   
 					<form>
-                        <input type='submit' value='Delete' class='btn btn-danger col-md-11' />
+                        <input type='submit' style="margin-top: 11px;" value='Delete' class='btn btn-danger col-md-11' />
                         <input type='hidden' name='user_id' value='<?= $row["user_id"] ?>' >
                         <input type='hidden' name='widget' value='curd_op' >
                     </form>       
