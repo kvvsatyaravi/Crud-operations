@@ -1,0 +1,17 @@
+h5.deleted{
+    text-align: center;
+    top: 2rem;
+    position: absolute;
+    background: red;
+    color: white;
+    margin: 1px;
+    padding: 4px;
+    width: 41%;
+    border-radius: 7px;
+            }
+span.close{
+	position: relative;
+	float: right;
+	top: -8px;
+	font-size: 35px;
+          }
