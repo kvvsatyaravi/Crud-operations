@@ -1,3 +1,23 @@
+<?php 
+    //pagination code logic
+    if (isset($_GET['page_no']) && $_GET['page_no']!="") {
+        $page_no = $_GET['page_no'];
+    } 
+    else {
+        $page_no = 1;
+    }
+     
+    $total_records_per_page = 10;
+    $offset = ($page_no-1) * $total_records_per_page;
+    $previous_page = $page_no - 1;
+    $next_page = $page_no + 1;
+    $adjacents = "2";
+    $result_count = mysql_query("SELECT * FROM users_data"); 
+    $total_records = mysql_num_rows($result_count);
+    $total_no_of_pages = ceil($total_records / $total_records_per_page);
+    $second_last = $total_no_of_pages - 5;
+      
+?>
 <center><h3>Crud operations</h3></center>
 <?php 	
 	if(isset($_GET["user_id"])){
@@ -29,7 +49,7 @@
         
         <?php
         //include 'config.php';
-        $sql = "SELECT * FROM users_data ";
+        $sql = "SELECT * FROM `users_data` ORDER BY user_id ASC LIMIT $offset, $total_records_per_page";
         $result = mysql_query($sql);
         while($row = mysql_fetch_assoc($result)) { ?>
             <tr>
@@ -76,4 +96,86 @@
 		<!-- delete script -->
         </tbody> 
     </table>
+
+
+    <? if ($total_records > $total_records_per_page) { ?>
+        
+        <div class="take" style="text-align:center;">
+        <ul class="pagination">
+           <?php // if($page_no > 1){ echo "<li><a href='?page_no=1'>First Page</a></li>"; } ?>
+            
+            <li <?php if($page_no <= 1){ echo "class='disabled' style='text-decoration:none;'"; } ?> >
+           <a <?php if($page_no > 1){ echo "href='https://ww2.managemydirectory.com/admin/go.php?widget=curd_op&page_no=1'"; } ?> >&lt;&lt;</a>
+           </li>
+           <li <?php if($page_no <= 1){ echo "class='disabled' style='text-decoration:none;'"; } ?> >
+           <a <?php if($page_no > 1){ echo "href='?widget=curd_op&page_no=$previous_page'"; } ?> >Previous</a>
+           </li>
+               
+            <?php 
+           if ($total_no_of_pages <= 4){     
+              for ($counter = 1; $counter <= $total_no_of_pages; $counter++){
+                 if ($counter == $page_no) {
+                 echo "<li class='active'><a>$counter</a></li>"; 
+                    }else{
+                   echo "<li><a href='?widget=curd_op&page_no=$counter'>$counter</a></li>";
+                    }
+                }
+           }
+           elseif($total_no_of_pages > 5){
+              
+           if($page_no <= 4) {        
+            for ($counter = 1; $counter < 7; $counter++){      
+                 if ($counter == $page_no) {
+                 echo "<li class='active'><a>$counter</a></li>"; 
+                    }else{
+                   echo "<li><a href='?widget=curd_op&page_no=$counter'>$counter</a></li>";
+                    }
+                }
+              echo "<li><a>...</a></li>";
+              echo "<li><a href='?widget=curd_op&page_no=$second_last'>$second_last</a></li>";
+              echo "<li><a href='?widget=curd_op&page_no=$total_no_of_pages'>$total_no_of_pages</a></li>";
+              }
+
+            elseif($page_no > 4 && $page_no < $total_no_of_pages - 6) {       
+              echo "<li><a href='?widget=curd_op&page_no=1'>1</a></li>";
+              echo "<li><a href='?widget=curd_op&page_no=2'>2</a></li>";
+                echo "<li><a>...</a></li>";
+                for ($counter = $page_no - $adjacents; $counter <= $page_no + $adjacents; $counter++) {       
+                   if ($counter == $page_no) {
+                 echo "<li class='active'><a>$counter</a></li>"; 
+                    }else{
+                   echo "<li><a href='?widget=curd_op&page_no=$counter'>$counter</a></li>";
+                    }                  
+               }
+               echo "<li><a>...</a></li>";
+              echo "<li><a href='?widget=curd_op&page_no=$second_last'>$second_last</a></li>";
+              echo "<li><a href='?widget=curd_op&page_no=$total_no_of_pages'>$total_no_of_pages</a></li>";      
+                    }
+              
+              else {
+                echo "<li><a href='?widget=curd_op&page_no=1'>1</a></li>";
+              echo "<li><a href='?widget=curd_op&page_no=2'>2</a></li>";
+                echo "<li><a>...</a></li>";
+
+                for ($counter = $total_no_of_pages - 6; $counter <= $total_no_of_pages; $counter++) {
+                  if ($counter == $page_no) {
+                 echo "<li class='active'><a>$counter</a></li>"; 
+                    }else{
+                   echo "<li><a href='?widget=curd_op&page_no=$counter'>$counter</a></li>";
+                    }                   
+                        }
+                    }
+           }
+        ?>
+            
+           <li <?php if($page_no >= $total_no_of_pages){ echo "class='disabled' style='text-decoration:none;'"; } ?>>
+           <a <?php if($page_no < $total_no_of_pages) { echo "href='?widget=curd_op&page_no=$next_page'"; } ?>>Next</a>
+           </li>
+            <?php if($page_no < $total_no_of_pages){
+              echo "<li><a href='?widget=curd_op&page_no=$total_no_of_pages'> &gt;&gt;</a></li>";
+              } ?>
+        </ul>
+        </div>
+    
+    <? }  ?>
            
